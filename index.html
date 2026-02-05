@@ -1,58 +1,64 @@
 <html>
 <head>
 <style>
-	table{
-		font-family: Calibri;
-		border: thin blue solid;
-		border-collapse: collapse;
-	}
+    table {
+        font-family: Arial;
+        border: blue solid;
+        font-size: 16px;
+        border-collapse: collapse;
+    }
 	td{
-		border: thin blue solid;
+		border: blue solid;
 	}
 	.total{
 		background-color: lightblue;
-		font-weight: 700;
+		font-weight: 800;
 	}
 </style>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script >
 	
 	// A list of players. Handicaps must align with the order of the players.
-	
-	var players = [
-		"Dave",
-		"Patrick"
+		var players = [
+		"D Richmond",
+		"T Steer",
+        "A Thackrey",
+        "A Turner"
+
 	];
 	
 	// Handicaps for each player above. Order is important.
-	
-	var playerHandicaps = [
-		[23,24,26],
-		[35,34,33]
+		var playerHandicaps = [
+		[27, 27, 27, 27],                       // Heacham, Cromer, Sher, Sandy Lodge
+		[21, 21, 21, 21],
+        [27, 27, 27, 27],
+        [22, 22, 22, 22]
 	];
 	
 	// Course names. Each course also needs an entry in courseStrokeIndex and courseHolePar
-	
-	var courses = [
+		var courses = [
 		"Heacham Manor",
 		"Royal Cromer",
-		"Sheringham"
+		"Sheringham",
+		"Sandy Lodge"
 	];
 
 	var strokeIndex = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
 	
 	// The stroke index for each hole on the course
 	var courseStrokeIndex = [
-		[4,9,17,13,12,1,11,16,5,7,2,15,6,8,14,10,18,3],
-		[5,9,15,7,13,1,3,17,11,12,6,16,10,4,2,14,18,8],
-		[17,13,3,12,1,10,6,15,8,2,18,9,4,7,14,16,5,11]
+		[4,9,17,13,12,1,11,16,5,7,2,15,6,8,14,10,18,3],    // Heacham
+		[5,9,15,7,13,1,3,17,11,12,6,16,10,4,2,14,18,8],    // Cromer 
+		[17,13,3,12,1,10,6,15,8,2,18,9,4,7,14,16,5,11],    // Sheringham
+        [9,5,15,11,3,1,13,17,7,14,2,6,16,8,12,4,10,18]     // Sandy Lodge
 	];
 	
 	// The par for each hole on the course.
 	var courseHolePar = [
-		[4,5,4,5,3,4,3,4,4,4,5,4,4,4,3,4,3,5],
-		[4,4,4,4,5,4,4,4,3,5,5,4,3,4,4,4,3,4],
-		[4,5,4,4,4,3,5,3,4,4,3,4,4,4,3,4,4,4]
+		[4,5,4,5,3,4,3,4,4,4,5,4,4,4,3,4,3,5],            // Heacham
+		[4,4,4,4,5,4,4,4,3,5,5,4,3,4,4,4,3,4],            // Cromer
+		[4,5,4,4,4,3,5,3,4,4,3,4,4,4,3,4,4,4],            // Sheringham 
+        [5,4,3,5,4,4,3,3,4,3,5,4,4,5,3,4,5,3]             // Sandy Lodge
 	];
 	
 $(document).ready(function(){
@@ -81,10 +87,10 @@ $(document).ready(function(){
 		$("#res").append(`
 			<tr>
 				<td>${i}</label>
-				<td  style="width: 3rem; text-align: right;" id="hole${i}OrigPar"></td>
-				<td  style="width: 3rem; text-align: right;" id="hole${i}SI"></td>
-				<td><input disabled style="border: none; text-align: right;" min="1" id="hole${i}Score" type=number class="holeScore" data-hole-num="${i}" /></td>
-				<td  style="width: 3rem; text-align: right;" id="hole${i}Result" class="holeResult" data-hole-num="${i}" ></td>
+				<td  style="width: 3rem; text-align: center;" id="hole${i}OrigPar"></td>
+				<td  style="width: 3rem; text-align: center;" id="hole${i}SI"></td>
+				<td><input disabled style="border: none; width: 5rem; font-weight: 700; font-size: 16px; text-align: center;" min="1" id="hole${i}Score" type=number class="holeScore" data-hole-num="${i}" /></td>
+				<td  style="width: 3rem; text-align: center;" id="hole${i}Result" class="holeResult" data-hole-num="${i}" ></td>
 			</tr>
 		`)
 	}
@@ -92,10 +98,10 @@ $(document).ready(function(){
 	// Out total
 	$("#res").append(`
 		<tr class="total">
-			<td colspan=2 style="text-align: right;" id="totalParOut"></td>
-			<td colspan=1 style="text-align: right;"><strong>Out</strong></label>
-			<td id = "totalScoreOut" style="text-align: right;"></td>
-			<td  style="text-align: right;" id="totalPointsOut"></td>
+			<td colspan=2 style="text-align: center;" id="totalParOut"></td>
+			<td colspan=1 style="text-align: center;"><strong>Out</strong></label>
+			<td id = "totalScoreOut" style="text-align: center;"></td>
+			<td  style="text-align: center;" id="totalPointsOut"></td>
 		</tr>
 	`);
 	
@@ -105,10 +111,10 @@ $(document).ready(function(){
 		$("#res").append(`
 			<tr>
 				<td>${i}</label>
-				<td  style="width: 3rem; text-align: right;" id="hole${i}OrigPar"></td>
-				<td  style="width: 3rem; text-align: right;" id="hole${i}SI"></td>
-				<td><input disabled style="border: none; text-align: right;" min="1" id="hole${i}Score" type=number class="holeScore" data-hole-num="${i}" /></td>
-				<td  style="width: 3rem; text-align: right;" id="hole${i}Result" class="holeResult" data-hole-num="${i}" ></td>
+				<td  style="width: 3rem; text-align: center;" id="hole${i}OrigPar"></td>
+				<td  style="width: 3rem; text-align: center;" id="hole${i}SI"></td>
+				<td><input disabled style="border: none; width: 5rem; font-weight: 700; font-size: 16px; text-align: center;" min="1" id="hole${i}Score" type=number class="holeScore" data-hole-num="${i}" /></td>
+				<td  style="width: 3rem; text-align: center;" id="hole${i}Result" class="holeResult" data-hole-num="${i}" ></td>
 			</tr>
 		`)
 	}
@@ -116,40 +122,49 @@ $(document).ready(function(){
 	// In Total and Out Total (again)
 	$("#res").append(`
 			<tr class="total">
-							<td colspan=2 style="text-align: right;" id="totalParIn"></td>
-				<td colspan=1 style="text-align: right;"><strong>In</strong></label>
-				<td id = "totalScoreIn" style="text-align: right;"></td>
-				<td  style="text-align: right;" id="totalPointsIn"></td>
+							<td colspan=2 style="text-align: center;" id="totalParIn"></td>
+				<td colspan=1 style="text-align: center;"><strong>In</strong></label>
+				<td id = "totalScoreIn" style="text-align: center;"></td>
+				<td  style="text-align: center;" id="totalPointsIn"></td>
 			</tr>
 			<tr class="total">
-				<td colspan=2 style="text-align: right;" id="totalParOut2"></td>
-				<td colspan=1 style="text-align: right;"><strong>Out</strong></label>
-				<td id = "totalScoreOut2" style="text-align: right;"></td>
-				<td  style="text-align: right;" id="totalPointsOut2"></td>
+				<td colspan=2 style="text-align: center;" id="totalParOut2"></td>
+				<td colspan=1 style="text-align: center;"><strong>Out</strong></label>
+				<td id = "totalScoreOut2" style="text-align: center;"></td>
+				<td  style="text-align: center;" id="totalPointsOut2"></td>
 			</tr>
 		`);
 		
 	// Grand total again
 	$("#res").append(`
 		<tr class="total grandtotal">
-			<td colspan=2 style="text-align: right;" id="totalPar"></td>
-			<td colspan=1 style="text-align: right;"><strong>Total</strong></label>
-			<td id="totalScore" style="text-align: right;"></td>
-			<td  style="text-align: right;" id="totalPoints"></td>
+			<td colspan=2 style="text-align: center;" id="totalPar"></td>
+			<td colspan=1 style="text-align: center;"><strong>Total</strong></label>
+			<td id="totalScore" style="text-align: center;"></td>
+			<td  style="text-align: center;" id="totalPoints"></td>
 		</tr>
 	`);
 	
-	// Email results button
+	// Block to allow player to move past last entry
 	$("#res").append(`
 		<tr class="total grandtotal">
 			<td colspan=5 ;">
-				<button type="button" id="emailResults" style="height: 60px; width: 100%;">
-					<strong style="font-size: big;">Mail to Dave</strong>
+				<button type="button" id="Final check" style="height: 60px; width: 100%;">
+					<strong style="font-size: big;">Final Check</strong>
 				</button>
 			</td>
 		</tr>
 	`);
-	
+    // Email results button
+    $("#res").append(`
+		<tr class="total grandtotal">
+			<td colspan=5 ;">
+				<button type="button" id="emailResults" style="height: 60px; width: 100%;">
+					<strong style="font-size: big;">Email to Dave Richmond >>>>>>></strong>
+				</button>
+			</td>
+		</tr>
+	`);
 	// Logic to put the handicap in when the play is changed
 	
 	$("#player").off("change").on("change", function(e){
@@ -265,10 +280,15 @@ $(document).ready(function(){
 	
 	$("#emailResults").on("click", function(){
 		
-		var link =`mailto:dave@richmond35.com?subject=Stableford for ${$("#player option:selected").text()} at ${$("#course option:selected").text()} on ${$("#playDate").val()}`;
-		var s = "Score";
-		var p = "Points";
-		for(var i = 1; i <= 18; ++i)
+        var link =`mailto:dave@richmond35.com?cc=andrew@aturner.co.uk?subject=Stableford for ${$("#player option:selected").text()} at ${$("#course option:selected").text()} on ${$("#playDate").val()}`;
+		var s_text = "Score";
+        var p_text = "Points";
+        var s = "";
+        var p = "";
+		var s_end = "";
+        var p_end = "";
+
+		for (var i = 1; i <= 18; ++i)
 		{
 			s += "%09";
 			s += $(`#hole${i}Score`).val() == "" ? 0 :  $(`#hole${i}Score`).val();
@@ -276,22 +296,22 @@ $(document).ready(function(){
 			p += $(`#hole${i}Result`).text() == "" ? 0 : $(`#hole${i}Result`).text() ;
 		}
 		
-		s += "%09Out%09";		
-		s += $(`#totalScoreOut`).text() == "" ? 0 :  $(`#totalScoreOut`).text();
-		s += "%09In%09";		
-		s += $(`#totalScoreIn`).text() == "" ? 0 :  $(`#totalScoreIn`).text();
-		s += "%09Total%09";		
-		s += $(`#totalScore`).text() == "" ? 0 :  $(`#totalScore`).text();
+		s_end += "%09Out%09";		
+		s_end += $(`#totalScoreOut`).text() == "" ? 0 :  $(`#totalScoreOut`).text();
+		s_end += "%09In%09";		
+		s_end += $(`#totalScoreIn`).text() == "" ? 0 :  $(`#totalScoreIn`).text();
+		s_end += "%09Total%09";		
+		s_end += $(`#totalScore`).text() == "" ? 0 :  $(`#totalScore`).text();
 
-		p += "%09Out%09";		
-		p += $(`#totalPointsOut`).text() == "" ? 0 :  $(`#totalPointsOut`).text();
-		p += "%09In%09";		
-		p += $(`#totalPointsIn`).text() == "" ? 0 :  $(`#totalPointsIn`).text();
-		p += "%09Total%09";		
-		p += $(`#totalPoints`).text() == "" ? 0 :  $(`#totalPoints`).text();
+		p_end += "%09Out%09";		
+		p_end += $(`#totalPointsOut`).text() == "" ? 0 :  $(`#totalPointsOut`).text();
+		p_end += "%09In%09";		
+		p_end += $(`#totalPointsIn`).text() == "" ? 0 :  $(`#totalPointsIn`).text();
+		p_end += "%09Total%09";		
+		p_end += $(`#totalPoints`).text() == "" ? 0 :  $(`#totalPoints`).text();
 
 
-		link+= `&body=Handicap ${$("#handicap").val()}%0D%0A${s}%0D%0A${p}`;
+        link += `&body=Handicap ${$("#handicap").val()}%0D%0A${s_text}%0D%0A${s}%0D%0A${s_end}%0D%0A${p_text}%0D%0A${p}%0D%0A${p_end}`;
 		console.log(link);
 		window.open(link);
 	});
@@ -302,27 +322,29 @@ $(document).ready(function(){
 <div>
 	<table>
 		<tr>
+			<td><input type="date" id="playDate" style="border: none; font-weight: 500; font-size: 16px; text-align: center;" /> </td>
+		</tr>
+		<tr>
 			<td>Course</td>
 			<td>
 				<select id="course" placeholder="Please Select Course" class="holeScore">
-					<option value="-1">Please Select course</option>
+					<option value="-1">Please Select Course</option>
 
 				</select>
 			</td>
-			<td><input type="date" id="playDate" /> </td
-			</tr>
-			<tr>
+		</tr>
+		<tr>
 			<td>Player Name</td>
-			<td>	
+			<td>
 				<select id="player" class="holeScore">
-					<option value="-1">Please select Player</option>
+					<option value="-1">Please Select Player</option>
 				</select>
 			</td>
-			</tr>
-			<tr>
+		</tr>
+		<tr>
 			<td>Handicap</td>
-			<td>	
-				<input disabled id="handicap" type="number" class="holeScore"/>
+			<td>
+				<input disabled id="handicap" type="number" style="border: none; font-weight: 700; font-size: 16px; text-align: center;" class="holeScore" />
 			</td>
 		</tr>
 	</table>
