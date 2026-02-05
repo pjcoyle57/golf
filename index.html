@@ -149,7 +149,7 @@ $(document).ready(function(){
 	$("#res").append(`
 		<tr class="total grandtotal">
 			<td colspan=5 ;">
-				<button type="button" id="Final check" style="height: 60px; width: 100%;">
+				<button type="button" id="finalCheck" style="height: 60px; width: 100%;">
 					<strong style="font-size: big;">Final Check</strong>
 				</button>
 			</td>
@@ -159,7 +159,7 @@ $(document).ready(function(){
     $("#res").append(`
 		<tr class="total grandtotal">
 			<td colspan=5 ;">
-				<button type="button" id="emailResults" style="height: 60px; width: 100%;">
+				<button type="button" disabled id="emailResults" style="height: 60px; width: 100%;">
 					<strong style="font-size: big;">Email to Dave Richmond >>>>>>></strong>
 				</button>
 			</td>
@@ -172,6 +172,22 @@ $(document).ready(function(){
 		if(optionSelected < playerHandicaps.length)
 			$("#handicap").val(playerHandicaps[optionSelected][$("#course").val()]);
 	});
+	
+	$("#finalCheck").on("click", function(){
+		for(var i = 0; i < 18; ++i){
+			let holeVal =  $(`#hole${i+1}Score`).val();
+			let holeInt = parseInt(holeVal ,10);
+			if(holeInt < 0 || holeInt >= 10)
+			{
+				$("#emailResults").attr("disabled", true);
+				alert("You have missed some entries.");
+				return false;
+			}
+		}
+		$("#emailResults").attr("disabled", false);
+
+	})
+	
 	$("#course").off("change").on("change", function(e){
 		var optionSelected = $("#course").val();
 		if(optionSelected < courses.length)
